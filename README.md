@@ -7,7 +7,7 @@ Create @OmniFocus PRO task from @zed.dev TODO, FIXME, ERROR and WARNING comments
 
 ## Using
 
-
+![](zed_to_omnigraffle.png)
 
 ### Applescript
 
@@ -115,7 +115,7 @@ The arguments send to the Applesript: `scrpt_path`, `omnifocus_tag`, `ZED_STEM`,
 
 ### Keymap
 
-Es werden  4 tasks benötigt. ⚠️ bei der Auswahl der spawn task die `cmd`TAste drücken, sonst wird beim nächsten Aufruf, die gleichen Argumente wie bei de forigen benutzt.
+4 tasks are required. ⚠️ Press the `cmd` key when selecting the spawn task, otherwise the same arguments as forigen will be used for the next call.
 
 #### `keymap.json`
 
