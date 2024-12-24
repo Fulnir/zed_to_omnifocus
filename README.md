@@ -7,7 +7,7 @@ Create @OmniFocus PRO task from @zed.dev TODO, FIXME, ERROR and WARNING comments
 
 ## Using
 
-![](zed_to_omnigraffle.png)
+![](https://github.com/Fulnir/zed_to_omnifocus/blob/main/zed_to_omnifocus.png)
 
 ### Applescript
 
