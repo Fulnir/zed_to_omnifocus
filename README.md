@@ -1,15 +1,23 @@
 # zed_to_omnifocus
-Create @OmniFocus task from @zed.dev TODO, FIXME, ERROR and WARNING comments.
+Create @OmniFocus PRO task from @zed.dev TODO, FIXME, ERROR and WARNING comments.
+
+
+
+## Installing
+
+## Using
 
 
 
 ### Applescript
 
+In my case, I saved the Applesript in the Zed config folder `~/.config/zed/Comment_to_Omnifocus.scpt`
+
 
 ```applescript
 on run argv
 
-	set {tasktag, stem, symbol, tasknote, taskname} to {item 1, item 2, item 3, item 4, item 5} of argv
+	set {tasktag, stem, deferplus, dueplus, symbol, tasknote, taskname} to {item 1, item 2, item 3, item 4, item 5, item 6, item 7} of argv
 
 
 	tell application "System Events"
@@ -19,7 +27,12 @@ on run argv
 		end if
 	end tell
 
+
 	tell front document of application "OmniFocus"
+		set _defer to deferplus as number
+		set _due to dueplus as number
+		set deferdate to ((current date) + (_defer * days))
+		set duedate to ((current date) + (_defer * days) + (_due * days))
 		try
 			set theTag to (first flattened tag where its name is tasktag)
 		on error
@@ -28,7 +41,7 @@ on run argv
 		set theProject to first flattened project where its name = "View of Things"
 
 		tell theProject
-			make new task with properties {name:stem & ":" & symbol & ": " & taskname, note:tasknote, primary tag:theTag}
+			make new task with properties {name:"➧" & stem & "➧" & symbol & "➧ " & taskname, note:tasknote, primary tag:theTag, defer date:deferdate, due date:duedate}
 
 		end tell
 	end tell
@@ -47,48 +60,54 @@ The used Zed [Variables](https://zed.dev/docs/tasks#variables) are.
 - ZED_SYMBOL: currently selected symbol; should match the last symbol shown in a symbol breadcrumb (e.g. mod tests > fn test_task_contexts)
 - ZED_SELECTED_TEXT: The selected comment text
 
-scrpt_path omnifocus_tag ZED_STEM defer_days due_days ZED_SYMBOL open_terninal_command comment_text
+The date arguments:
+- defer_days: The number of days for which the task is deferred.
+- due_days: The number of days until the task is due.
+
+The arguments send to the Applesript: `scrpt_path`, `omnifocus_tag`, `ZED_STEM`, `defer_days`, `due_days`, `ZED_SYMBOL`, `open_terninal_command`and the selected `comment_text`.
+
+#### `tasks.json`
 
 ```json
 [
   {
     "label": "Create an 📒ToDo OmniFocus task.",
-    "command": "osascript \"/Users/ed/ex/ViewOfThings/omnifocus.scpt\"  \"📒Todo\"  \"$ZED_STEM\"  \"90\" \"180\" \"$ZED_SYMBOL\" \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"📒 $ZED_SELECTED_TEXT\"  ",
+    "command": "osascript \"$HOME/.config/zed/Comment_to_Omnifocus.scpt\"  \"📒Todo\"  \"$ZED_STEM\"  \"90\" \"180\" \"$ZED_SYMBOL\" \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"📒 $ZED_SELECTED_TEXT\"  ",
     "tags": ["OmniFocus"],
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
-    "reveal": "always",
-    "hide": "always",
+    "reveal": "no_focus",
+    "hide": "on_success",
     "shell": "system"
   },
   {
     "label": "Create an 🩹FixMe OmniFocus task.",
-    "command": "osascript \"/Users/ed/ex/ViewOfThings/omnifocus.scpt\"  \"🩹FixMe\"  \"$ZED_STEM\"  \"7\" \"30\"  \"$ZED_SYMBOL\"  \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"🩹 $ZED_SELECTED_TEXT\"  ",
+    "command": "osascript \"$HOME/.config/zed/Comment_to_Omnifocus.scpt\"  \"🩹FixMe\"  \"$ZED_STEM\"  \"7\" \"30\"  \"$ZED_SYMBOL\"  \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"🩹 $ZED_SELECTED_TEXT\"  ",
     "tags": ["OmniFocus"],
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
-    "reveal": "always",
-    "hide": "always",
+    "reveal": "no_focus",
+    "hide": "on_success",
     "shell": "system"
   },
   {
     "label": "Create an ⚠️Warning OmniFocus task.",
-    "command": "osascript \"/Users/ed/ex/ViewOfThings/omnifocus.scpt\"  \"⚠️Warning\"  \"$ZED_STEM\"  \"30\" \"90\"  \"$ZED_SYMBOL\"  \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"⚠️ $ZED_SELECTED_TEXT\"  ",
+    "command": "osascript \"$HOME/.config/zed/Comment_to_Omnifocus.scpt\"  \"⚠️Warning\"  \"$ZED_STEM\"  \"30\" \"90\"  \"$ZED_SYMBOL\"  \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"⚠️ $ZED_SELECTED_TEXT\"  ",
     "tags": ["OmniFocus"],
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
-    "reveal": "always",
-    "hide": "always",
+    "reveal": "no_focus",
+    "hide": "on_success",
     "shell": "system"
   },
   {
     "label": "Create an 🛑Error OmniFocus task.",
-    "command": "osascript \"/Users/ed/ex/ViewOfThings/omnifocus.scpt\"  \"🛑Error\"  \"$ZED_STEM\"  \"7\" \"90\"  \"$ZED_SYMBOL\"  \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"🐞 $ZED_SELECTED_TEXT\"  ",
+    "command": "osascript \"$HOME/.config/zed/Comment_to_Omnifocus.scpt\"  \"🛑Error\"  \"$ZED_STEM\"  \"7\" \"90\"  \"$ZED_SYMBOL\"  \"zed $ZED_FILE:$ZED_COLUMN:$ZED_ROW\"  \"🛑 $ZED_SELECTED_TEXT\"  ",
     "tags": ["OmniFocus"],
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
-    "reveal": "always",
-    "hide": "always",
+    "reveal": "no_focus",
+    "hide": "on_success",
     "shell": "system"
   }
 ]
@@ -96,7 +115,9 @@ scrpt_path omnifocus_tag ZED_STEM defer_days due_days ZED_SYMBOL open_terninal_c
 
 ### Keymap
 
-`keymap.json`
+Es werden  4 tasks benötigt. ⚠️ bei der Auswahl der spawn task die `cmd`TAste drücken, sonst wird beim nächsten Aufruf, die gleichen Argumente wie bei de forigen benutzt.
+
+#### `keymap.json`
 
 ```json
 [
@@ -141,7 +162,9 @@ scrpt_path omnifocus_tag ZED_STEM defer_days due_days ZED_SYMBOL open_terninal_c
 
 ### Snippets
 
-`your_snippets.json`
+A few more snippets for entering comments.
+
+#### `your_snippets.json`
 
 ```json
 {

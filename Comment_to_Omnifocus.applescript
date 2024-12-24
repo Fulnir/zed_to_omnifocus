@@ -24,7 +24,7 @@ on run argv
 		set theProject to first flattened project where its name = "View of Things"
 
 		tell theProject
-			make new task with properties {name:stem & ":" & symbol & ": " & taskname, note:tasknote, primary tag:theTag, defer date:deferdate, due date:duedate}
+			make new task with properties {name:"➧" & stem & "➧" & symbol & "➧ " & taskname, note:tasknote, primary tag:theTag, defer date:deferdate, due date:duedate}
 
 		end tell
 	end tell
