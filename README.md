@@ -1,9 +1,16 @@
 # zed_to_omnifocus
-Create @OmniFocus PRO task from @zed.dev TODO, FIXME, ERROR and WARNING comments.
+
+Create @OmniFocus PRO tasks from @zed.dev TODO, FIXME, ERROR and WARNING comments.
 
 
 
 ## Installing
+
+- Add the tasks bellow to your `tasks.json` file.
+- Add the keymap items bellow to your `keymap.json` file.
+- Add the snippets bellow to your `snippets.json` file.
+- Open the file `Comment_to_Omnifocus.scpt` with the apples apples `ScriptEditor` and save it as `scpt` file to your Zed config folder  `~/.config/zed/Comment_to_Omnifocus.scpt`. Or to your preferred folder.
+
 
 ## Using
 
