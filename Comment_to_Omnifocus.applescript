@@ -1,6 +1,6 @@
 on run argv
 
-	set {tasktag, stem, deferplus, dueplus, symbol, tasknote, taskname} to {item 1, item 2, item 3, item 4, item 5, item 6, item 7} of argv
+	set {tasktag, stem, deferplus, dueplus, symbol, tasknote, row, projectname, taskname} to {item 1, item 2, item 3, item 4, item 5, item 6, item 7, item 8, item 9} of argv
 
 
 	tell application "System Events"
@@ -14,6 +14,7 @@ on run argv
 	tell front document of application "OmniFocus"
 		set _defer to deferplus as number
 		set _due to dueplus as number
+		set _row to row as number
 		set deferdate to ((current date) + (_defer * days))
 		set duedate to ((current date) + (_defer * days) + (_due * days))
 		try
@@ -21,10 +22,10 @@ on run argv
 		on error
 			set theTag to make new tag with properties {name:tasktag}
 		end try
-		set theProject to first flattened project where its name = "View of Things"
+		set theProject to first flattened project where its name = projectname
 
 		tell theProject
-			make new task with properties {name:"➧" & stem & "➧" & symbol & "➧ " & taskname, note:tasknote, primary tag:theTag, defer date:deferdate, due date:duedate}
+			make new task with properties {name:"➧" & stem & "➧" & symbol & "➧" & _row & "➧ " & taskname, note:tasknote, primary tag:theTag, defer date:deferdate, due date:duedate}
 
 		end tell
 	end tell
